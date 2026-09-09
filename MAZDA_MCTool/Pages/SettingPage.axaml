@@ -1,0 +1,64 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModels="clr-namespace:MAZDA_MCTool.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             xmlns:ui="using:FluentAvalonia.UI.Controls"
+             xmlns:ia="using:MAZDA_MCTool.UI.Behaviors"
+             x:DataType="viewModels:SettingPageViewModels"
+             x:Class="MAZDA_MCTool.Pages.SettingPage">
+  <ScrollViewer>
+    <Interaction.Behaviors>
+      <ia:VerticalScrollViewerAnimatedBehavior/>
+    </Interaction.Behaviors>
+    <StackPanel Margin="36 40">
+      <TextBlock Text="设置" FontWeight="SemiBold" FontSize="28" Margin="0 0 0 36" />
+
+      <StackPanel Margin="0 0 0 16">
+        <TextBlock Text="通用" FontWeight="SemiBold" FontSize="14" Margin="0 0 0 8" />
+        <ui:SettingsExpander
+          IconSource="Edit"
+          Header="设置游戏目录"
+          Description="{Binding AppSetting.GamePath}"
+          IsClickEnabled="True"
+          Command="{Binding SelectGamePathCommand}">
+          <ui:SettingsExpander.ActionIconSource>
+            <ui:FontIconSource Glyph="{StaticResource ChevronRight}"
+                               FontSize="12"
+                               FontFamily="{StaticResource SymbolThemeFontFamily}" />
+          </ui:SettingsExpander.ActionIconSource>
+        </ui:SettingsExpander>
+      </StackPanel>
+
+      <StackPanel Margin="0 0 0 16" Spacing="8">
+        <TextBlock Text="关于" FontWeight="SemiBold" FontSize="14" />
+        <ui:SettingsExpander
+          IconSource="Code"
+          Header="开源项目引用">
+          <ui:SettingsExpander.ItemsPanel>
+            <ItemsPanelTemplate>
+              <WrapPanel/>
+            </ItemsPanelTemplate>
+          </ui:SettingsExpander.ItemsPanel>
+          <HyperlinkButton Content="Avalonia" NavigateUri="https://github.com/AvaloniaUI/Avalonia" />
+          <HyperlinkButton Content="HotAvalonia" NavigateUri="https://github.com/Kira-NT/HotAvalonia" />
+          <HyperlinkButton Content="FluentAvaloniaUI" NavigateUri="https://github.com/amwx/FluentAvalonia" />
+          <HyperlinkButton Content="PCL2" NavigateUri="https://github.com/Hex-Dragon/PCL2" />
+          <HyperlinkButton Content="Tomlyn" NavigateUri="https://github.com/xoofx/Tomlyn" />
+          <HyperlinkButton Content="CommunityToolkit" NavigateUri="https://github.com/CommunityToolkit/dotnet" />
+          <HyperlinkButton Content="Microsoft.Extensions.Dependencylnjection"
+                           NavigateUri="https://github.com/dotnet/runtime" />
+          <HyperlinkButton Content="Velopack" NavigateUri="https://github.com/velopack/velopack" />
+          <HyperlinkButton Content="Avalonia.Xaml.Interactions.Animated" NavigateUri="https://github.com/Egolds/Avalonia.Xaml.Interactions.Animated" />
+        </ui:SettingsExpander>
+        <ui:SettingsExpander IsClickEnabled="False" IconSource="Up" Header="更新">
+          <StackPanel Orientation="Horizontal" Spacing="8">
+            <TextBlock Text="{Binding Version,StringFormat=当前版本：{0}}" VerticalAlignment="Center" />
+            <Button Content="检查更新" Command="{Binding UpdateCommand}" />
+          </StackPanel>
+        </ui:SettingsExpander>
+      </StackPanel>
+    </StackPanel>
+  </ScrollViewer>
+</UserControl>

@@ -1,0 +1,139 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="using:MAZDA_MCTool.UI.Controls"
+        xmlns:models="using:MAZDA_MCTool.UI.Models">
+  <Design.PreviewWith>
+    <controls:InfoBar />
+  </Design.PreviewWith>
+  
+  <Styles.Resources>
+    <x:Double x:Key="InfoBarTitleFontSize">14</x:Double>
+    <FontWeight x:Key="InfoBarTitleFontWeight">SemiBold</FontWeight>
+    <x:Double x:Key="InfoBarMessageFontSize">14</x:Double>
+    <FontWeight x:Key="InfoBarMessageFontWeight">Normal</FontWeight>
+    <StaticResource x:Key="InfoBarErrorSeverityBackgroundBrush" ResourceKey="SystemFillColorCriticalBackgroundBrush" />
+    <StaticResource x:Key="InfoBarWarningSeverityBackgroundBrush" ResourceKey="SystemFillColorCautionBackgroundBrush" />
+    <StaticResource x:Key="InfoBarSuccessSeverityBackgroundBrush" ResourceKey="SystemFillColorSuccessBackgroundBrush" />
+    <StaticResource x:Key="InfoBarInformationalSeverityBackgroundBrush"
+                    ResourceKey="ControlFillColorInputActiveBrush" />
+    <StaticResource x:Key="InfoBarErrorSeverityIconBackground" ResourceKey="SystemFillColorCriticalBrush" />
+    <StaticResource x:Key="InfoBarWarningSeverityIconBackground" ResourceKey="SystemFillColorCautionBrush" />
+    <StaticResource x:Key="InfoBarSuccessSeverityIconBackground" ResourceKey="SystemFillColorSuccessBrush" />
+    <StaticResource x:Key="InfoBarInformationalSeverityIconBackground" ResourceKey="SystemFillColorAttentionBrush" />
+    <StaticResource x:Key="InfoBarErrorSeverityIconForeground" ResourceKey="TextFillColorInverseBrush" />
+    <StaticResource x:Key="InfoBarWarningSeverityIconForeground" ResourceKey="TextFillColorInverseBrush" />
+    <StaticResource x:Key="InfoBarSuccessSeverityIconForeground" ResourceKey="TextFillColorInverseBrush" />
+    <StaticResource x:Key="InfoBarInformationalSeverityIconForeground" ResourceKey="TextFillColorInverseBrush" />
+    <StaticResource x:Key="InfoBarTitleForeground" ResourceKey="TextFillColorPrimaryBrush" />
+    <StaticResource x:Key="InfoBarMessageForeground" ResourceKey="TextFillColorPrimaryBrush" />
+    <StaticResource x:Key="InfoBarHyperlinkButtonForeground" ResourceKey="AccentTextFillColorPrimaryBrush" />
+    <StaticResource x:Key="InfoBarBorderBrush" ResourceKey="CardStrokeColorDefaultBrush" />
+    <Thickness x:Key="InfoBarBorderThickness">1</Thickness>
+  </Styles.Resources>
+
+  <Style Selector="controls|InfoBar">
+    <Setter Property="Focusable" Value="False" />
+    <Setter Property="Spacing" Value="4" />
+    <Setter Property="Template">
+      <ControlTemplate TargetType="controls:InfoBar">
+        <Border CornerRadius="{TemplateBinding CornerRadius}">
+          <ScrollViewer>
+            <ItemsPresenter>
+              <ItemsPresenter.ItemsPanel>
+                <ItemsPanelTemplate>
+                  <StackPanel
+                    Spacing="{Binding Spacing, RelativeSource={RelativeSource AncestorType=controls:InfoBar}}" />
+                </ItemsPanelTemplate>
+              </ItemsPresenter.ItemsPanel>
+            </ItemsPresenter>
+          </ScrollViewer>
+        </Border>
+      </ControlTemplate>
+    </Setter>
+    <Setter Property="ItemTemplate">
+      <DataTemplate x:DataType="models:InfoMessage">
+        <Border Padding="12" BorderThickness="0.8" BorderBrush="{StaticResource InfoBarBorderBrush}"
+                Classes.Informational="{Binding Severity,Converter={x:Static ObjectConverters.Equal},ConverterParameter={x:Static models:InfoSeverity.Informational}}"
+                Classes.Success="{Binding Severity,Converter={x:Static ObjectConverters.Equal},ConverterParameter={x:Static models:InfoSeverity.Success}}"
+                Classes.Warning="{Binding Severity,Converter={x:Static ObjectConverters.Equal},ConverterParameter={x:Static models:InfoSeverity.Warning}}"
+                Classes.Error="{Binding Severity,Converter={x:Static ObjectConverters.Equal},ConverterParameter={x:Static models:InfoSeverity.Error}}"
+                CornerRadius="8">
+          <Border.Styles>
+            <Style Selector="Border.Informational">
+              <Setter Property="Background" Value="{DynamicResource SystemFillColorSolidNeutralBackgroundBrush}" />
+              <Style Selector="^ TextBlock#IconBackground">
+                <Setter Property="Foreground" Value="{DynamicResource SystemFillColorAttentionBrush}" />
+              </Style>
+              <Style Selector="^ TextBlock#StandardIcon">
+                <Setter Property="Text" Value="{StaticResource InfoBarInformationalIconGlyph}" />
+                <Setter Property="Foreground" Value="{DynamicResource InfoBarInformationalSeverityIconForeground}" />
+              </Style>
+            </Style>
+
+            <Style Selector="Border.Success">
+              <Setter Property="Background" Value="{DynamicResource SystemFillColorSuccessBackgroundBrush}" />
+              <Style Selector="^ TextBlock#IconBackground">
+                <Setter Property="Foreground" Value="{DynamicResource SystemFillColorSuccessBrush}" />
+              </Style>
+              <Style Selector="^ TextBlock#StandardIcon">
+                <Setter Property="Text" Value="{StaticResource InfoBarSuccessIconGlyph}" />
+                <Setter Property="Foreground" Value="{DynamicResource InfoBarInformationalSeverityIconForeground}" />
+              </Style>
+            </Style>
+
+            <Style Selector="Border.Warning">
+              <Setter Property="Background" Value="{DynamicResource SystemFillColorCautionBackgroundBrush}" />
+              <Style Selector="^ TextBlock#IconBackground">
+                <Setter Property="Foreground" Value="{DynamicResource SystemFillColorCautionBrush}" />
+              </Style>
+              <Style Selector="^ TextBlock#StandardIcon">
+                <Setter Property="Text" Value="{StaticResource InfoBarWarningIconGlyph}" />
+                <Setter Property="Foreground" Value="{DynamicResource InfoBarInformationalSeverityIconForeground}" />
+              </Style>
+            </Style>
+
+            <Style Selector="Border.Error">
+              <Setter Property="Background" Value="{DynamicResource SystemFillColorCriticalBackgroundBrush}" />
+              <Style Selector="^ TextBlock#IconBackground">
+                <Setter Property="Foreground" Value="{DynamicResource SystemFillColorCriticalBrush}" />
+              </Style>
+              <Style Selector="^ TextBlock#StandardIcon">
+                <Setter Property="Text" Value="{StaticResource InfoBarErrorIconGlyph}" />
+                <Setter Property="Foreground" Value="{DynamicResource InfoBarInformationalSeverityIconForeground}" />
+              </Style>
+            </Style>
+          </Border.Styles>
+          <StackPanel>
+            <StackPanel Spacing="16" Orientation="Horizontal" VerticalAlignment="Center">
+              <Panel x:Name="StandardIconArea">
+                <TextBlock x:Name="IconBackground" FontSize="16"
+                           Text="{StaticResource InfoBarIconBackgroundGlyph}"
+                           FontFamily="{StaticResource SymbolThemeFontFamily}" />
+                <TextBlock x:Name="StandardIcon" FontSize="16"
+                           FontFamily="{StaticResource SymbolThemeFontFamily}" />
+              </Panel>
+              <TextBlock Text="{Binding Title}"
+                         Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                         TextWrapping="WrapWithOverflow" FontWeight="{StaticResource InfoBarTitleFontWeight}"
+                         FontSize="{StaticResource InfoBarTitleFontSize}" />
+              <TextBlock x:Name="Message" Text="{Binding Message}"
+                         Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                         TextWrapping="Wrap"
+                         FontWeight="{StaticResource InfoBarMessageFontWeight}"
+                         FontSize="{StaticResource InfoBarMessageFontSize}" />
+              <Button FontFamily="{StaticResource SymbolThemeFontFamily}" Content="{StaticResource Cancel}"
+                      VerticalAlignment="Top"
+                      HorizontalAlignment="Right"
+                      Tag="{Binding}" />
+            </StackPanel>
+
+            <Button
+              Content="{Binding ButtonStr}"
+              IsVisible="{Binding ButtonAction,Converter={x:Static ObjectConverters.IsNotNull}}"
+              Command="{Binding StartActionCommand}" />
+          </StackPanel>
+        </Border>
+      </DataTemplate>
+    </Setter>
+  </Style>
+</Styles>

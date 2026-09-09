@@ -1,0 +1,14 @@
+using MAZDA_MCTool.Abstraction.Contracts.Models;
+
+namespace NetCore.Models
+{
+  public class ModProjectNetInfo : IModProjectNetInfo
+  {
+    public string Id { get; set; } = string.Empty;
+    public string Slug { get; set; } = string.Empty;
+    public string Title { get; set; } = string.Empty;
+    public string Description { get; set; } = string.Empty;
+    // public string Status { get; set; } = string.Empty;
+    public string IconUrl { get; set; } = string.Empty;
+  }
+}
