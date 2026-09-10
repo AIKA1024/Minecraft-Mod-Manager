@@ -4,8 +4,9 @@
 
 ## 功能特性
 
-- **模组自动识别**：拖拽 mod 文件即可识别，支持 Forge / NeoForge / Fabric / LiteLoader 四种加载器的 `mods.toml`、`fabric.mod.json` 等元数据解析
-- **指纹匹配**：通过文件 SHA-1 指纹调用 CurseForge Fingerprint API，识别没有内嵌元数据的模组
+- **模组信息解析**：扫描本地 mods 目录，自动计算文件 SHA-1 与 CurseForge 指纹，并通过策略模式解析模组内嵌元数据，支持 Forge / NeoForge（`mods.toml`）、Fabric（`fabric.mod.json`）、LiteLoader 等加载器
+- **指纹匹配**：对没有内嵌元数据的模组，通过 CurseForge Fingerprint API 按指纹识别项目信息
+- **模组清单同步**：一键生成模组清单文件（模组名 + SHA-1 + 指纹）；将清单分享给他人后，对方导入即可自动比对出缺少的模组并批量下载补齐，多余的模组可选择删除——适合整合包分享与多人环境同步
 - **在线更新检测**：对接 CurseForge / Modrinth API，批量获取模组最新版本与下载链接
 - **下载管理**：多任务下载，实时进度上报（进度条 / InfoBar 通知）
 - **本地缓存**：模组信息 SHA-1 键值缓存，减少重复网络请求

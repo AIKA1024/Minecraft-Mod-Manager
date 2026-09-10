@@ -1,0 +1,74 @@
+<UserControl
+  x:Class="MAZDA_MCTool.Pages.DownloadPage"
+  xmlns="https://github.com/avaloniaui"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+  xmlns:viewModels="clr-namespace:MAZDA_MCTool.ViewModels"
+  xmlns:cv="using:MAZDA_MCTool.Converters"
+  d:DesignHeight="450"
+  d:DesignWidth="800"
+  x:DataType="viewModels:DownloadPageViewModel"
+  mc:Ignorable="d">
+  <UserControl.Styles>
+    <Style Selector="ProgressBar.Succeed">
+      <Setter Property="Foreground" Value="{DynamicResource SystemFillColorSuccessBrush}" />
+    </Style>
+  </UserControl.Styles>
+  <Grid RowDefinitions="Auto,*" Margin="36 40 36 0">
+    <Grid Grid.Row="0" ColumnDefinitions="1.5*,*" Margin="0 0 0 36">
+      <TextBlock Grid.Column="0" Text="下载" FontWeight="SemiBold" FontSize="28" />
+      <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="16" HorizontalAlignment="Right"
+                  IsVisible="{Binding TaskList.Count}">
+        <TextBlock Text="总进度" FontWeight="Black" VerticalAlignment="Center" />
+        <ProgressBar Value="{Binding OverAllProgress}" Maximum="1"
+                     Classes.Succeed="{Binding OverAllProgress,Converter={cv:DoubleToBoolConverter},ConverterParameter=1}" />
+      </StackPanel>
+    </Grid>
+
+    <Border Grid.Row="1" CornerRadius="8" ClipToBounds="True">
+      <ListBox ItemsSource="{Binding TaskList}"
+               Background="{DynamicResource CardBackgroundFillColorSecondaryBrush}">
+        <ListBox.ItemTemplate>
+          <DataTemplate>
+            <Grid ColumnDefinitions="*,auto,auto" Margin="8">
+              <TextBlock Text="{Binding Name}" VerticalAlignment="Center" />
+              <ProgressBar Grid.Column="1" Value="{Binding Progress}" Margin="16 0"
+                           Classes.Succeed="{Binding IsSucceed}">
+              </ProgressBar>
+              <StackPanel Grid.Column="2" Orientation="Horizontal">
+                <Button Classes.Default="{Binding IsSucceed,Converter={x:Static ObjectConverters.IsNull}}"
+                        Classes.Succeed="{Binding IsSucceed}"
+                        Command="{Binding $parent.((viewModels:DownloadPageViewModel)DataContext).CancelDownloadCommand}"
+                        CommandParameter="{Binding}">
+                  <Button.Styles>
+                    <Style Selector="Button">
+                      <Setter Property="Padding" Value="4" />
+                      <Setter Property="FontSize" Value="12" />
+                      <Setter Property="BorderThickness" Value="0" />
+                      <Setter Property="FontFamily" Value="{StaticResource SymbolThemeFontFamily}" />
+                      <Style Selector="^ /template/ ContentPresenter:pointerover">
+                        <Setter Property="Background" Value="{DynamicResource ControlAltFillColorSecondaryBrush}" />
+                      </Style>
+                    </Style>
+                    <Style Selector="Button.Default/template/ContentPresenter">
+                      <Setter Property="Content" Value="{StaticResource Cancel}" />
+                      <Setter Property="IsEnabled" Value="True" />
+                    </Style>
+                    <Style Selector="Button.Succeed">
+                      <Setter Property="Content" Value="{StaticResource Accept}" />
+                      <Setter Property="IsEnabled" Value="False" />
+                      <Style Selector="^/template/ContentPresenter">
+                        <Setter Property="Foreground" Value="{DynamicResource SystemFillColorSuccessBrush}" />
+                      </Style>
+                    </Style>
+                  </Button.Styles>
+                </Button>
+              </StackPanel>
+            </Grid>
+          </DataTemplate>
+        </ListBox.ItemTemplate>
+      </ListBox>
+    </Border>
+  </Grid>
+</UserControl>

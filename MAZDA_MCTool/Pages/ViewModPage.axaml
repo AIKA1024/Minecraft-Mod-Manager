@@ -1,0 +1,201 @@
+<UserControl
+  x:Class="MAZDA_MCTool.Pages.ViewModPage"
+  xmlns="https://github.com/avaloniaui"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+  xmlns:i="clr-namespace:MAZDA_MCTool.Behaviors"
+  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+  xmlns:models="clr-namespace:MAZDA_MCTool.Models"
+  xmlns:viewModels="clr-namespace:MAZDA_MCTool.ViewModels"
+  xmlns:ia="using:MAZDA_MCTool.UI.Behaviors"
+  d:DesignHeight="450"
+  d:DesignWidth="800"
+  x:DataType="viewModels:ViewModPageViewModel"
+  Initialized="StyledElement_OnInitialized"
+  Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
+  mc:Ignorable="d">
+  <Interaction.Behaviors>
+    <i:DropFileBehavior Files="{Binding DropFiles, Mode=OneWayToSource}" />
+    <RoutedEventTriggerBehavior RoutedEvent="{x:Static DragDrop.DragEnterEvent}">
+      <RemoveClassAction ClassName="Hide" StyledElement="DragDropPanel" />
+    </RoutedEventTriggerBehavior>
+    <RoutedEventTriggerBehavior RoutedEvent="{x:Static DragDrop.DragLeaveEvent}">
+      <AddClassAction ClassName="Hide" StyledElement="DragDropPanel" />
+    </RoutedEventTriggerBehavior>
+    <RoutedEventTriggerBehavior RoutedEvent="{x:Static DragDrop.DropEvent}">
+      <AddClassAction ClassName="Hide" StyledElement="DragDropPanel" />
+    </RoutedEventTriggerBehavior>
+  </Interaction.Behaviors>
+  <UserControl.Styles>
+    <Style Selector="AutoCompleteBox.Shadow /template/ Popup#PART_Popup Border#PART_SuggestionsContainer">
+      <Setter Property="BoxShadow" Value="0 2 12 0 #80000000" />
+      <Setter Property="Margin" Value="8 2 8 10" />
+    </Style>
+  </UserControl.Styles>
+
+  <Grid Margin="36,16,36,0" RowDefinitions="Auto,*">
+    <Grid Height="60" ColumnDefinitions="*,*">
+      <StackPanel Orientation="Horizontal" Spacing="12">
+        <Button
+          VerticalAlignment="Center"
+          Command="{Binding GenerateSynchronizationFileCommand}"
+          Content="生成同步文件" />
+        <Button
+          VerticalAlignment="Center"
+          Command="{Binding SelectSynchronizationFileCommand}"
+          Content="使用同步文件" />
+      </StackPanel>
+      <Button
+        Grid.Column="1"
+        HorizontalAlignment="Right"
+        VerticalAlignment="Center"
+        Classes="AccentButtonStyle"
+        Content="使用私人服务器同步Mod"
+        IsEnabled="False" />
+    </Grid>
+    <Grid
+      Grid.Row="1"
+      RowDefinitions="Auto,*"
+      VerticalAlignment="Stretch"
+      HorizontalAlignment="Stretch">
+      <Border Grid.Row="0"
+              Padding="8"
+              CornerRadius="8 8 0 0"
+              ClipToBounds="True"
+              BorderThickness="0 0 0 1"
+              BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}"
+              Background="{DynamicResource CardBackgroundFillColorSecondaryBrush}">
+        <Grid ColumnDefinitions="*,*">
+          <TextBlock Margin="8 0 0 0"
+                     VerticalAlignment="Center"
+                     Text="{Binding DisplayModInfos.Count,StringFormat=共有{0}个模组}" />
+          <AutoCompleteBox
+            x:Name="SearchAutoCompleteBox"
+            Grid.Column="1"
+            Classes="Shadow"
+            Watermark="搜索已安装的Mod"
+            MaxDropDownHeight="400"
+            FilterMode="Contains"
+            ItemsSource="{Binding ModNames}">
+            <AutoCompleteBox.KeyBindings>
+              <KeyBinding
+                Gesture="Enter"
+                Command="{Binding SearchLocalModCommand}"
+                CommandParameter="{Binding #SearchAutoCompleteBox.Text}" />
+            </AutoCompleteBox.KeyBindings>
+            <Interaction.Behaviors>
+              <DataTriggerBehavior Binding="{Binding #SearchAutoCompleteBox.SelectedItem}"
+                                   ComparisonCondition="NotEqual" Value="{x:Null}">
+                <InvokeCommandAction Command="{Binding SearchLocalModCommand}"
+                                     CommandParameter="{Binding #SearchAutoCompleteBox.SelectedItem}" />
+              </DataTriggerBehavior>
+            </Interaction.Behaviors>
+          </AutoCompleteBox>
+        </Grid>
+      </Border>
+      <ListBox
+               Grid.Row="1"
+               Background="{DynamicResource CardBackgroundFillColorSecondaryBrush}"
+               ItemsSource="{Binding DisplayModInfos}"
+               SelectionMode="Multiple">
+        <Interaction.Behaviors>
+          <ia:VerticalItemControlAnimatedBehavior/>
+        </Interaction.Behaviors>
+        <ListBox.DataTemplates>
+          <DataTemplate DataType="models:ModInfo">
+            <Grid ColumnDefinitions="Auto,*" Margin="0,4" Background="Transparent">
+              <Grid.ContextFlyout>
+                <MenuFlyout>
+                  <MenuItem Header="在资源管理器中打开" Command="{Binding $parent[ListBox].((viewModels:ViewModPageViewModel)DataContext).RevealInExplorerCommand}"
+                            CommandParameter="{Binding $parent[ListBox].SelectedItems}"/>
+                  <MenuItem Header="删除" Command="{Binding $parent[ListBox].((viewModels:ViewModPageViewModel)DataContext).DeleteModsCommand}"
+                            CommandParameter="{Binding $parent[ListBox].SelectedItems}"/>
+                </MenuFlyout>
+              </Grid.ContextFlyout>
+              <Border
+                BorderBrush="{DynamicResource CircleElevationBorderBrush}"
+                BorderThickness="0.6"
+                ClipToBounds="True"
+                CornerRadius="4">
+                <Image
+                  Width="32"
+                  Height="32"
+                  Source="{Binding Logo, TargetNullValue={StaticResource ModDefaultIcon}}"
+                  Stretch="Fill" />
+              </Border>
+              <Grid Grid.Column="1" RowDefinitions="Auto,Auto" Margin="12,0,0,0">
+                <StackPanel Orientation="Horizontal">
+                  <TextBlock VerticalAlignment="Center" Text="{Binding Name}" />
+                  <TextBlock
+                    Margin="12,0,0,0"
+                    VerticalAlignment="Center"
+                    FontSize="12"
+                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                    IsVisible="{Binding Version, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
+                    Text="{Binding Version, StringFormat=|  {0}, Mode=OneWay}" />
+                  <Button
+                    Margin="12,0,0,0"
+                    VerticalAlignment="Center"
+                    Background="{x:Null}"
+                    Classes="IconButton"
+                    Command="{Binding $parent[ListBox].((viewModels:ViewModPageViewModel)DataContext).OpenModWebsiteCommand}"
+                    CommandParameter="{Binding Website}"
+                    Content="{StaticResource Globe}"
+                    CornerRadius="8"
+                    FontFamily="{StaticResource SymbolThemeFontFamily}"
+                    IsVisible="{Binding Website, Converter={x:Static ObjectConverters.IsNotNull}}"
+                    ToolTip.Tip="在浏览器中查看详情" />
+                </StackPanel>
+                <TextBlock Grid.Row="1"
+                           FontSize="12"
+                           Text="{Binding Description}"
+                           TextTrimming="{x:Static TextTrimming.WordEllipsis}"
+                           TextWrapping="NoWrap"/>
+              </Grid>
+            </Grid>
+          </DataTemplate>
+        </ListBox.DataTemplates>
+      </ListBox>
+    </Grid>
+    <TextBlock
+      Grid.Row="1"
+      HorizontalAlignment="Center"
+      VerticalAlignment="Center"
+      FontSize="16"
+      FontWeight="Black"
+      IsVisible="{Binding Message, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
+      Text="{Binding Message}" />
+    <Panel
+      x:Name="DragDropPanel"
+      Grid.Row="0"
+      Grid.RowSpan="2"
+      Background="White"
+      Classes="Hide"
+      DragDrop.AllowDrop="True"
+      Opacity="0.8">
+      <Interaction.Behaviors>
+        <RoutedEventTriggerBehavior RoutedEvent="{x:Static DragDrop.DropEvent}">
+          <InvokeCommandAction Command="{Binding DragSynchronizationFileCommand}" PassEventArgsToCommand="True" />
+        </RoutedEventTriggerBehavior>
+      </Interaction.Behaviors>
+      <Panel.Styles>
+        <Style Selector="Panel#DragDropPanel.Hide">
+          <Setter Property="IsVisible" Value="False" />
+        </Style>
+      </Panel.Styles>
+      <TextBlock
+        HorizontalAlignment="Center"
+        VerticalAlignment="Center"
+        Text="将文件拖入此处" />
+      <Rectangle
+        Width="200"
+        Height="100"
+        RadiusX="10"
+        RadiusY="10"
+        Stroke="Gray"
+        StrokeDashArray="3,4"
+        StrokeThickness="2" />
+    </Panel>
+  </Grid>
+
+</UserControl>

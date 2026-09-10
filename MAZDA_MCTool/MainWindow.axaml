@@ -1,0 +1,103 @@
+<Window
+  x:Class="MAZDA_MCTool.MainWindow"
+  xmlns="https://github.com/avaloniaui"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+  xmlns:enums="clr-namespace:MAZDA_MCTool.Enums"
+  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+  xmlns:viewModels="clr-namespace:MAZDA_MCTool.ViewModels"
+  xmlns:ui="clr-namespace:MAZDA_MCTool.UI.Controls;assembly=MAZDA_MCTool.UI"
+  xmlns:windowing="clr-namespace:FluentAvalonia.UI.Windowing;assembly=FluentAvalonia"
+  Title="马自达MC工具箱"
+  WindowStartupLocation="CenterScreen"
+  Width="850"
+  Height="440"
+  d:DataContext="{d:DesignInstance {x:Type viewModels:MainWindowViewModel}}"
+  x:DataType="viewModels:MainWindowViewModel"
+  Closed="TopLevel_OnClosed"
+  mc:Ignorable="d">
+  <Window.Template>
+    <ControlTemplate TargetType="Window">
+      <VisualLayerManager>
+        <Panel>
+          <OverlayLayer />
+          <Border x:Name="RootBorder" HorizontalAlignment="Stretch">
+            <Grid RowDefinitions="Auto,*">
+              <Grid Row="0" ColumnDefinitions="*,Auto" Background="{DynamicResource SolidBackgroundFillColorBaseBrush}">
+                <StackPanel x:Name="DefaultTitleBar" Height="48" Orientation="Horizontal">
+                  <Image Source="Resources/Images/mzd.ico" Margin="16 0" Width="24" VerticalAlignment="Center" />
+                  <TextBlock Text="{Binding Title,RelativeSource={RelativeSource AncestorType=Window}}"
+                             Foreground="{TemplateBinding Foreground}"
+                             VerticalAlignment="Center" />
+                </StackPanel>
+                <windowing:MinMaxCloseControl
+                  Grid.Column="1"
+                  FontSize="12"
+                  Height="32"
+                  VerticalAlignment="Top"
+                  windowing:AppWindow.AllowInteractionInTitleBar="True" />
+              </Grid>
+              <ContentPresenter Grid.Row="1"
+                                Foreground="{TemplateBinding Foreground}"
+                                Content="{TemplateBinding Content}"
+                                Background="{TemplateBinding Background}" />
+            </Grid>
+          </Border>
+        </Panel>
+      </VisualLayerManager>
+    </ControlTemplate>
+  </Window.Template>
+
+  <Panel>
+    <SplitView
+      DisplayMode="Inline"
+      IsPaneOpen="True"
+      OpenPaneLength="60">
+      <SplitView.Pane>
+        <DockPanel LastChildFill="False">
+          <DockPanel.Styles>
+            <Style Selector="RadioButton.SideButton">
+              <Setter Property="HorizontalAlignment" Value="Center" />
+              <Setter Property="Width" Value="50" />
+              <Setter Property="Margin" Value="0 4 0 4" />
+              <Setter Property="Command" Value="{Binding Path=ChangePageCommand}" />
+            </Style>
+          </DockPanel.Styles>
+          <RadioButton
+            Classes="SideButton"
+            CommandParameter="{x:Static enums:PageType.Mod}"
+            Content="{StaticResource Puzzle}"
+            DockPanel.Dock="Top"
+            Tag="Mod" 
+            IsChecked="True"/>
+          <RadioButton
+            Classes="SideButton"
+            CommandParameter="{x:Static enums:PageType.Server}"
+            Content="{StaticResource Globe}"
+            IsEnabled="False"
+            DockPanel.Dock="Top"
+            Tag="服务器" />
+          <RadioButton
+            Classes="SideButton"
+            CommandParameter="{x:Static enums:PageType.Settings}"
+            Content="{StaticResource Setting}"
+            DockPanel.Dock="Bottom"
+            Tag="设置" />
+          <RadioButton
+            Classes="SideButton"
+            CommandParameter="{x:Static enums:PageType.DownLoad}"
+            Content="{StaticResource Download}"
+            DockPanel.Dock="Bottom"
+            Tag="下载" />
+        </DockPanel>
+      </SplitView.Pane>
+      <Border CornerRadius="8 0 0 0" ClipToBounds="True">
+        <ContentControl Background="{DynamicResource LayerFillColorAltBrush}" Content="{Binding Path=CurrentPage}" />
+      </Border>
+    </SplitView>
+    <ui:InfoBar
+      Margin="0 16 16 0"
+      HorizontalAlignment="Right"
+      ItemsSource="{Binding Infos}" />
+  </Panel>
+</Window>

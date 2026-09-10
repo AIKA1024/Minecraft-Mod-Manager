@@ -1,0 +1,18 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <!-- Add Resources Here -->
+  <FontFamily x:Key="SymbolThemeFontFamily">Segoe MDL2 Assets</FontFamily>
+  <!-- Segoe Fluent Icons -->
+  <x:String x:Key="Puzzle">&#xeA86;</x:String>
+  <x:String x:Key="Globe">&#xe774;</x:String>
+  <x:String x:Key="Setting">&#xe713;</x:String>
+  <x:String x:Key="InfoBarIconBackgroundGlyph">&#xF136;</x:String>
+  <x:String x:Key="InfoBarInformationalIconGlyph">&#xF13F;</x:String>
+  <x:String x:Key="InfoBarErrorIconGlyph">&#xF13D;</x:String>
+  <x:String x:Key="InfoBarWarningIconGlyph">&#xF13C;</x:String>
+  <x:String x:Key="InfoBarSuccessIconGlyph">&#xF13E;</x:String>
+  <x:String x:Key="Cancel">&#xE711;</x:String>
+  <x:String x:Key="Download">&#xE896;</x:String>
+  <x:String x:Key="ChevronRight">&#xE76C;</x:String>
+  <x:String x:Key="Accept">&#xE8FB;</x:String>
+</ResourceDictionary>

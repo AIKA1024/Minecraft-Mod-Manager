@@ -1,0 +1,29 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <Design.PreviewWith>
+    <Border Padding="20">
+      <!-- Add Controls for Previewer Here -->
+    </Border>
+  </Design.PreviewWith>
+
+  <Style Selector="Button.AccentButtonStyle">
+    <Setter Property="BorderThickness" Value="1"/>
+    <Setter Property="BorderBrush" Value="{DynamicResource AccentButtonBorderBrush}"/>
+    <Setter Property="Background" Value="{DynamicResource AccentButtonBackground}"/>
+    <Setter Property="Foreground" Value="{DynamicResource AccentButtonForeground}"/>
+    <Setter Property="CornerRadius" Value="4"/>
+    <Style Selector="^ /template/ ContentPresenter:pointerover">
+      <Setter Property="BorderBrush" Value="{DynamicResource AccentButtonBorderBrushPointerOver}"/>
+      <Setter Property="Background" Value="{DynamicResource AccentButtonBackgroundPointerOver}"/>
+      <Setter Property="Foreground" Value="{DynamicResource AccentButtonForegroundPointerOver}"/>
+    </Style>
+    <Style Selector="^ /template/ ContentPresenter:pressed">
+      <Setter Property="Background" Value="{DynamicResource AccentButtonBackgroundPressed}"/>
+      <Setter Property="Foreground" Value="{DynamicResource AccentButtonForegroundPressed}"/>
+    </Style>
+    <Style Selector="^ /template/ ContentPresenter:disabled">
+      <Setter Property="Background" Value="{DynamicResource AccentButtonBackgroundDisabled}"/>
+      <Setter Property="Foreground" Value="{DynamicResource AccentButtonForegroundDisabled}"/>
+    </Style>
+  </Style>
+</Styles>
